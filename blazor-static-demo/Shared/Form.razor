@@ -7,9 +7,15 @@
     <strong>@Title</strong>
 
     <EditForm Model="@GameModel" OnValidSubmit="@OnValidSubmit" OnInvalidSubmit="@OnInvalidSubmit">
-        <DataAnnotationsValidator/>
-        <InputText id="title" @bind-Value="GameModel.Title"/>
-        <button type="submit">Submit</button>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            <label for="title">Game Title</label>
+            <InputText id="title" @bind-Value="GameModel.Title" class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
     </EditForm>
 
 </div>
@@ -22,10 +28,10 @@
     public string? Title { get; set; }
 
     private void OnValidSubmit(){
-        Logger.LogInformation(GameModel.Title);
+        Logger.LogInformation($"Valid Form Submit Values: {GameModel.Title}");
     }
 
     private void OnInvalidSubmit(){
-        Logger.LogInformation(GameModel.Title);
+        Logger.LogInformation($"Invalid Form Submit Values: {GameModel.Title}");
     }
 }
