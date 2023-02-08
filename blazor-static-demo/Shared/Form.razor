@@ -1,0 +1,31 @@
+
+@using Microsoft.Extensions.Logging
+@inject ILogger<Form> Logger
+
+<div class="alert alert-secondary mt-4">
+    <span class="oi oi-pencil me-2" aria-hidden="true"></span>
+    <strong>@Title</strong>
+
+    <EditForm Model="@GameModel" OnValidSubmit="@OnValidSubmit" OnInvalidSubmit="@OnInvalidSubmit">
+        <DataAnnotationsValidator/>
+        <InputText id="title" @bind-Value="GameModel.Title"/>
+        <button type="submit">Submit</button>
+    </EditForm>
+
+</div>
+
+@code {
+
+    private GameModel GameModel = new();
+
+    [Parameter]
+    public string? Title { get; set; }
+
+    private void OnValidSubmit(){
+        Logger.LogInformation(GameModel.Title);
+    }
+
+    private void OnInvalidSubmit(){
+        Logger.LogInformation(GameModel.Title);
+    }
+}
