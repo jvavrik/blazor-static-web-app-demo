@@ -33,7 +33,7 @@
         Logger.LogInformation($"Valid Form Submit Values: {GameModel.Title}");
 
         http.DefaultRequestHeaders.Add("x-functions-key", "C_cJyftpeX6F38GijijaBCQQvu2n4koI_LB5eZRo5kutAzFuEQ6SSw==");
-        var resp = await http.PostAsJsonAsync("http://static-app-blazor-demo.azurewebsites.net/api/FavoriteGame", GameModel);
+        var resp = await http.PostAsJsonAsync("https://static-app-blazor-demo.azurewebsites.net/api/FavoriteGame", GameModel);
         var value = await resp.Content.ReadAsStringAsync();
         Logger.LogInformation(value);
 
