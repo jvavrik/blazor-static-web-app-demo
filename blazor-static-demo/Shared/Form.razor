@@ -1,6 +1,8 @@
 
 @using Microsoft.Extensions.Logging
+@using System.Net.Http.Json
 @inject ILogger<Form> Logger
+@inject HttpClient http
 
 <div class="alert alert-secondary mt-4">
     <span class="oi oi-pencil me-2" aria-hidden="true"></span>
@@ -27,8 +29,14 @@
     [Parameter]
     public string? Title { get; set; }
 
-    private void OnValidSubmit(){
+    async Task OnValidSubmit(){
         Logger.LogInformation($"Valid Form Submit Values: {GameModel.Title}");
+
+        http.DefaultRequestHeaders.Add("x-functions-key", "C_cJyftpeX6F38GijijaBCQQvu2n4koI_LB5eZRo5kutAzFuEQ6SSw==");
+        var resp = await http.PostAsJsonAsync("http://static-app-blazor-demo.azurewebsites.net/api/FavoriteGame", GameModel);
+        var value = await resp.Content.ReadAsStringAsync();
+        Logger.LogInformation(value);
+
     }
 
     private void OnInvalidSubmit(){
