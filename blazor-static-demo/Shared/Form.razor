@@ -18,13 +18,20 @@
             <label for="title">Game Title</label>
             <InputText id="title" @bind-Value="GameModel.Title" class="form-control" />
         </div>
-
         <button type="submit" class="btn btn-primary">Submit</button>
+        @if(Success){
+         <span class="text-success">Thank you for your submission! You may submit another.</span>   
+        }
+        @if(Error){
+         <span class="text-danger">There was an error. Please try again.</span>   
+        }
     </EditForm>
 
 </div>
 
 @code {
+
+    private bool Success, Error = false;
 
     private GameModel GameModel = new();
 
@@ -32,6 +39,8 @@
     public string? Title { get; set; }
 
     async Task OnValidSubmit(){
+        Success = false;
+        Error = false;
         Logger.LogInformation($"Valid Form Submit Values: {GameModel.Title}");
 
         if(http.DefaultRequestHeaders.Contains("x-functions-key"))
@@ -42,7 +51,11 @@
         var resp = await http.PostAsJsonAsync(@Configuration["functionsPostUrl"], GameModel);
         
         var value = await resp.Content.ReadAsStringAsync();
-        
+        if(resp.StatusCode == System.Net.HttpStatusCode.OK)
+            Success = true;
+        else
+            Error = true;
+
         Logger.LogInformation(value);
 
         GameModel = new();
