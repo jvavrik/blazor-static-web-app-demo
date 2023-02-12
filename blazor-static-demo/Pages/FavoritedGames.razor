@@ -1,0 +1,44 @@
+@page "/favorited-games"
+@inject HttpClient Http
+
+
+<PageTitle>Favorited Games</PageTitle>
+
+<h1>Favorited Games</h1>
+<p>Here is a list of favorited games!</p>
+
+
+@if (games == null || games == Enumerable.Empty<GameModel>())
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Game Title</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var game in games)
+            {
+                <tr>
+                    <td>@game.Title</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IEnumerable<GameModel> games = Enumerable.Empty<GameModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if(Http.DefaultRequestHeaders.Contains("x-functions-key"))
+            Http.DefaultRequestHeaders.Remove("x-functions-key");
+        Http.DefaultRequestHeaders.Add("x-functions-key", "tDb_4JTs9PHCuDujZTPZN6jqaS6KAM9PWdLc2U2XVXfeAzFus3ytWg==");
+        games = await Http.GetFromJsonAsync<IEnumerable<GameModel>>("https://static-app-blazor-demo.azurewebsites.net/api/FavoriteGameGet");
+    }
+}

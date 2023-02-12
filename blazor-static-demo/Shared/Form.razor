@@ -32,8 +32,10 @@
     async Task OnValidSubmit(){
         Logger.LogInformation($"Valid Form Submit Values: {GameModel.Title}");
 
-        if(!http.DefaultRequestHeaders.Contains("x-functions-key"))
-            http.DefaultRequestHeaders.Add("x-functions-key", "C_cJyftpeX6F38GijijaBCQQvu2n4koI_LB5eZRo5kutAzFuEQ6SSw==");
+        if(http.DefaultRequestHeaders.Contains("x-functions-key"))
+            http.DefaultRequestHeaders.Remove("x-functions-key");
+
+        http.DefaultRequestHeaders.Add("x-functions-key", "C_cJyftpeX6F38GijijaBCQQvu2n4koI_LB5eZRo5kutAzFuEQ6SSw==");
         
         var resp = await http.PostAsJsonAsync("https://static-app-blazor-demo.azurewebsites.net/api/FavoriteGame", GameModel);
         
